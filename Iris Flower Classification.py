@@ -1,0 +1,19 @@
+import pandas as pd
+import zipfile
+import os
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+with zipfile.ZipFile(r"C:\CodeAlpha\Iris Flower Classification\archive.zip", 'r') as zip_ref:
+    zip_ref.extractall(r"C:\CodeAlpha\Iris Flower Classification")
+
+df = pd.read_csv(r"C:\CodeAlpha\Iris Flower Classification\Iris.csv")
+X = df.iloc[:, 1:5]
+y = df.iloc[:, 5]
+y = LabelEncoder().fit_transform(y)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+model = RandomForestClassifier()
+model.fit(X_train, y_train)
+pred = model.predict(X_test)
+print("Accuracy:", accuracy_score(y_test, pred))
